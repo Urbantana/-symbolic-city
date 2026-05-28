@@ -1,41 +1,87 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>Symbolic City Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Symbolic City — Dashboard</title>
+<style>
+  :root{--bg:#ffffff;--muted:#6b7280;--accent:#0b5cff;--card:#f8fafc}
+  body{font-family:system-ui, "Segoe UI", Roboto, Arial;max-width:1100px;margin:18px auto;padding:18px;background:var(--bg);color:#111}
+  header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  h1{margin:0;font-size:1.4rem}
+  p.lead{color:var(--muted);margin:6px 0 12px}
+  nav ul{list-style:none;padding:0;margin:0;display:flex;gap:8px;flex-wrap:wrap}
+  nav a{display:inline-block;padding:8px 12px;background:#eef4ff;color:var(--accent);border-radius:8px;text-decoration:none;font-weight:600}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:14px}
+  .card{background:var(--card);padding:14px;border-radius:10px;border:1px solid #e6eefc}
+  .card h3{margin:0 0 6px}
+  .card p{margin:0 0 10px;color:var(--muted)}
+  .btn{display:inline-block;padding:8px 10px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-size:0.95rem}
+  footer{margin-top:18px;color:var(--muted);font-size:0.9rem}
+  .meta{font-size:0.85rem;color:var(--muted);margin-top:8px}
+  @media (max-width:640px){ header{flex-direction:column;align-items:flex-start} }
+</style>
 </head>
 <body>
   <header>
-    <h1>لوحة الحلول الحضرية</h1>
-    <nav>
+    <div>
+      <h1>لوحة الحلول الحضرية — Symbolic City</h1>
+      <p class="lead">من التخطيط إلى الإطلاق وقياس الأثر — واجهة مركزية لتنسيق التجارب الحضرية ومواءمة الشركاء.</p>
+    </div>
+    <nav aria-label="Main navigation">
       <ul>
         <li><a href="planning/index.html">التخطيط</a></li>
         <li><a href="solutions/index.html">إطلاق الحلول</a></li>
         <li><a href="impact/index.html">قياس الأثر</a></li>
+        <li><a href="../tools/editor/readme-comments.html">تعليقات README</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <section>
-      <h2>مرحلة التخطيط</h2>
-      <p>صفحة مبدئية لوضع الخطط والمشاريع.</p>
+    <section class="grid" aria-label="Phases">
+      <article class="card">
+        <h3>مرحلة التخطيط</h3>
+        <p>تعريف المشكلة، تحديد الأهداف، اختيار مؤشرات الأداء، وخطة اختبار ميداني (PoC).</p>
+        <a class="btn" href="planning/index.html">اذهب إلى التخطيط</a>
+        <div class="meta">مسار افتراضي: <code>dashboard/planning/index.html</code></div>
+      </article>
+
+      <article class="card">
+        <h3>مرحلة إطلاق الحلول</h3>
+        <p>تنفيذ التدخلات الرمزية والرقمية، إدارة العمليات الميدانية، وتنسيق الفرق والشركاء.</p>
+        <a class="btn" href="solutions/index.html">اذهب إلى الإطلاق</a>
+        <div class="meta">مسار افتراضي: <code>dashboard/solutions/index.html</code></div>
+      </article>
+
+      <article class="card">
+        <h3>مرحلة قياس الأثر</h3>
+        <p>جمع البيانات، تحليل KPIs، تقارير الأثر، وتوصيات التوسيع أو الإيقاف.</p>
+        <a class="btn" href="impact/index.html">اذهب إلى قياس الأثر</a>
+        <div class="meta">مسار افتراضي: <code>dashboard/impact/index.html</code></div>
+      </article>
+
+      <article class="card">
+        <h3>التوثيق والتعليقات</h3>
+        <p>مساحة لتجميع ملاحظات الفريق، سجلات التغييرات، وملفات الحوكمة (privacy, consent).</p>
+        <a class="btn" href="../tools/editor/readme-comments.html">تعليقات الفريق</a>
+        <div class="meta">مسار افتراضي: <code>tools/editor/readme-comments.html</code></div>
+      </article>
     </section>
 
-    <section>
-      <h2>مرحلة الحلول</h2>
-      <p>صفحة لإطلاق الحلول ومتابعة التنفيذ.</p>
-    </section>
-
-    <section>
-      <h2>مرحلة قياس الأثر</h2>
-      <p>صفحة لعرض النتائج والتقارير.</p>
+    <section style="margin-top:18px" class="card">
+      <h3>ملاحظات تشغيلية سريعة</h3>
+      <ul>
+        <li>ضع ملفات الصفحات الفرعية في المسارات المشار إليها أعلاه حتى تعمل الروابط مباشرة عبر GitHub Pages.</li>
+        <li>ابدأ بمحتوى ثابت (index.html لكل مجلد) ثم أضف تفاعلية (PWA، جافاسكربت، APIs) تدريجيًا.</li>
+        <li>احتفظ بملف `docs/privacy.md` و`docs/approvals/` داخل المستودع لتوثيق الموافقات قبل أي نشر ميداني.</li>
+      </ul>
     </section>
   </main>
 
   <footer>
-    <p>© 2026 Symbolic City</p>
+    <div>© 2026 Symbolic City — Dashboard</div>
+    <div class="meta">عرض عبر Pages: <code>https://urbantana.github.io/-symbolic-city/dashboard/index.html</code></div>
   </footer>
 </body>
 </html>
