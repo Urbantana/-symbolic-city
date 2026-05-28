@@ -11,13 +11,14 @@
     <aside class="sidebar" role="navigation" aria-label="Sidebar">
       <div class="brand">Symbolic City</div>
       <nav class="nav" aria-label="Main">
-        <a href="../dashboard/index.html">لوحة القيادة</a>
+        <a href="../index.html">لوحة القيادة</a>
         <a href="../planning/index.html">التخطيط</a>
         <a href="../development/index.html">المخطط التطويري</a>
         <a href="../solutions/index.html">إطلاق الحلول</a>
         <a href="../impact/index.html">نبض المدينة</a>
-        <a href="../../tools/editor/readme-comments.html">تعليقات الفريق</a>
-        <a class="active" href="index.html">تطبيقات وخدمات</a>
+        <!-- رابط تعليقات الفريق مطلق بالنسبة للمستودع -->
+        <a href="/-symbolic-city/tools/editor/readme-comments.html">تعليقات الفريق</a>
+        <a class="active" href="index.html" aria-current="page">تطبيقات وخدمات</a>
       </nav>
     </aside>
 
@@ -34,19 +35,19 @@
         <article class="card">
           <h2>تطبيق مشاركة الركوب</h2>
           <p class="small">تكامل مع مزودي الخدمة لخفض السيارات الفردية.</p>
-          <a class="btn" href="#">عرض التكامل</a>
+          <a class="btn" href="#" role="button" aria-label="عرض تفاصيل تكامل تطبيق مشاركة الركوب">عرض التكامل</a>
         </article>
 
         <article class="card">
           <h2>خدمة شحن الدراجات</h2>
           <p class="small">شبكة محطات شحن للدراجات الكهربائية.</p>
-          <a class="btn" href="#">تفاصيل الخدمة</a>
+          <a class="btn" href="#" role="button" aria-label="عرض تفاصيل خدمة شحن الدراجات">تفاصيل الخدمة</a>
         </article>
 
         <article class="card">
           <h2>تكاملات النقل التشاركي</h2>
           <p class="small">واجهات برمجة تطبيقات لربط بيانات الرحلات وقياس الأثر.</p>
-          <a class="btn" href="#">اطلب التكامل</a>
+          <a class="btn" href="#" role="button" aria-label="طلب تكاملات النقل التشاركي">اطلب التكامل</a>
         </article>
       </section>
 
