@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>لوحة الحلول الحضرية — Symbolic City</title>
+  <!-- ملف الأنماط موجود داخل dashboard/ -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,12 +12,14 @@
     <aside class="sidebar" id="sidebar" role="navigation" aria-label="Sidebar">
       <div class="brand">Symbolic City</div>
       <nav class="nav" aria-label="Main">
+        <!-- روابط نسبية صحيحة داخل مجلد dashboard -->
         <a class="active" href="index.html">لوحة القيادة</a>
         <a href="planning/index.html">التخطيط</a>
         <a href="development/index.html">المخطط التطويري</a>
         <a href="solutions/index.html">إطلاق الحلول</a>
         <a href="impact/index.html">نبض المدينة</a>
-        <a href="../tools/editor/readme-comments.html">تعليقات الفريق</a>
+        <!-- رابط التعليقات: مسار مطلق بالنسبة للمستودع لتجنّب أخطاء المسار -->
+        <a href="/-symbolic-city/tools/editor/readme-comments.html">تعليقات الفريق</a>
         <a href="apps/index.html">تطبيقات وخدمات</a>
         <small>support@symbolic-city.org</small>
       </nav>
@@ -112,7 +115,6 @@
     // Complaints (localStorage)
     (function(){
       const key = 'sc_complaints_v1';
-      const formAdd = document.getElementById('addComplaint');
       const exportBtn = document.getElementById('exportComplaints');
 
       function load(){ try{ return JSON.parse(localStorage.getItem(key))||[] }catch(e){return[]} }
