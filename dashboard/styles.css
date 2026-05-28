@@ -1,52 +1,115 @@
 :root{
   --bg:#f5f7fb;
   --panel:#283593;
-  --accent:#ff7a18; /* لمسة برتقالية */
+  --panel-2:#1e2a6b;
+  --accent:#ff7a18;
   --accent-2:#00b0ff;
   --muted:#6b7280;
   --card:#ffffff;
   --glass:rgba(2,6,23,0.04);
   --radius:12px;
   --text:#1f2937;
+
+  /* New deep-blue palette and spots */
+  --deep-blue:#05203a;           /* شديد الزراق المعتم */
+  --deep-blue-2:#07304f;         /* تدرج أغمق */
+  --deep-blue-soft:#dff6ff;      /* أزرق خفيف متداخل بالابيض */
+  --spot-dark: rgba(3,18,40,0.85);/* بؤرة داكنة شفافة */
+  --spot-soft: rgba(223,246,255,0.9); /* بؤرة فاتحة شفافة */
+  --btn-shadow: 0 10px 30px rgba(2,24,45,0.18);
 }
 
 /* عام */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0;font-family:"Tajawal",sans-serif;background:var(--bg);color:var(--text);direction:rtl;
+  margin:0;font-family:"Tajawal",sans-serif;background:
+    /* subtle layered background with soft blue spots */
+    radial-gradient(circle at 10% 10%, var(--spot-soft) 0%, transparent 12%),
+    radial-gradient(circle at 85% 80%, rgba(240,249,255,0.9) 0%, transparent 14%),
+    var(--bg);
+  color:var(--text);direction:rtl;
 }
 
 /* تخطيط عام */
 .app{display:flex;min-height:100vh}
+
+/* الشريط الجانبي مع بؤرة زرقاء داكنة مركزة */
 .sidebar{
-  width:260px;background:linear-gradient(180deg,var(--panel),#1e2a6b);padding:18px;color:#fff;
+  width:260px;
+  padding:18px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0,112,204,0.12) 0%, transparent 18%),
+    linear-gradient(180deg,var(--panel),var(--panel-2));
+  border-right:1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 30px rgba(2,16,32,0.18) inset;
+  transition:transform .28s ease, width .2s ease;
 }
-.brand{font-weight:800;font-size:1.05rem;color:#fff;margin-bottom:12px}
+.brand{font-weight:800;font-size:1.05rem;color:var(--deep-blue-soft);margin-bottom:12px}
 .nav a{display:block;color:#dbeafe;text-decoration:none;padding:10px;border-radius:8px;margin-bottom:8px}
-.nav a.active{background:rgba(255,255,255,0.06);color:#fff}
+.nav a.active{background:linear-gradient(90deg, rgba(0,176,255,0.06), rgba(255,122,24,0.04));color:#fff}
 .nav small{display:block;color:#c7d2fe;margin-top:12px;font-size:13px}
 
 /* المحتوى الرئيسي */
 .main{flex:1;padding:22px}
 .header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.header h1{margin:0;font-size:1.4rem;color:#0f1724}
+.header h1{margin:0;font-size:1.4rem;color:var(--deep-blue)}
 .subtitle{color:var(--muted);margin-top:6px}
 .badge{background:linear-gradient(90deg,var(--accent),#ff9a4a);padding:6px 10px;border-radius:999px;color:#08121a;font-weight:700}
 
 /* شبكة البطاقات */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:18px}
-.card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
-.card h2{margin:0 0 8px;color:#0f1724}
+.card{
+  background:var(--card);
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 6px 18px rgba(15,23,42,0.06);
+  transition:transform .18s ease, box-shadow .18s ease, background .25s ease;
+}
+.card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(8,24,48,0.12)}
+.card h2{margin:0 0 8px;color:var(--deep-blue-2)}
 .card p{color:var(--muted);margin:0 0 12px}
-.btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#ff9a4a);color:#08121a;text-decoration:none;font-weight:800}
 
-/* بطاقة نبض المدينة مميزة بلون هادئ */
+/* أزرار مع لمسة زرقاء داكنة في البؤر */
+.btn{
+  display:inline-block;padding:10px 14px;border-radius:10px;
+  background:linear-gradient(90deg,var(--accent),#ff9a4a);
+  color:#08121a;text-decoration:none;font-weight:800;border:none;cursor:pointer;
+  box-shadow:var(--btn-shadow);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(2,24,45,0.2)}
+
+/* زر ثانوي أزرق داكن */
+.btn.blue{
+  background: linear-gradient(180deg,var(--deep-blue-2),var(--deep-blue));
+  color: #e6f7ff;
+  box-shadow: 0 12px 30px rgba(3,18,40,0.28);
+}
+
+/* بطاقة نبض المدينة مميزة بلون هادئ مع بؤرة زرقاء */
 .card.impact, .card.highlight{
-  background:linear-gradient(135deg,#e8f7f9,#f3fbf1);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(0,112,204,0.06) 0%, transparent 18%),
+    linear-gradient(135deg,#e8f7f9,#f3fbf1);
   border:1px solid rgba(2,6,23,0.04);
 }
-.card.impact h2{color:#0b6b4a}
+.card.impact h2{color:var(--deep-blue)}
+
+/* إضافة تأثير بؤر ضوئية قابلة لإعادة الاستخدام */
+.spot-foreground{
+  position:relative;
+  overflow:hidden;
+}
+.spot-foreground::before{
+  content:"";
+  position:absolute;left:50%;top:10%;width:420px;height:420px;
+  transform:translateX(-50%) translateY(-10%);
+  background:radial-gradient(circle at 30% 30%, var(--spot-dark) 0%, rgba(3,18,40,0.0) 35%),
+             radial-gradient(circle at 70% 70%, var(--spot-soft) 0%, rgba(223,246,255,0) 30%);
+  opacity:0.12;pointer-events:none;
+}
 
 /* اللوحة السفلية */
 .panel{display:flex;gap:18px;margin-top:20px;align-items:flex-start}
@@ -68,9 +131,13 @@ body{
 .complaints-list .votes{display:flex;flex-direction:column;align-items:center;gap:6px}
 .complaints-list .votes .count{background:linear-gradient(90deg,var(--accent),#ff9a4a);color:#08121a;padding:6px 8px;border-radius:999px;font-weight:800}
 
-/* المرئيات والملخص */
-.visual{background:linear-gradient(180deg,#eaf6ff,#f7fbff);padding:12px;border-radius:12px}
-.summary.card{margin-top:12px;padding:12px}
+/* المرئيات والملخص مع بؤرة زرقاء ناعمة */
+.visual{
+  background:
+    radial-gradient(circle at 80% 20%, rgba(0,112,204,0.06) 0%, transparent 18%),
+    linear-gradient(180deg,#eaf6ff,#f7fbff);
+  padding:12px;border-radius:12px;
+}
 
 /* تذييل */
 .footer{margin-top:28px;padding:18px;text-align:center;color:var(--muted);font-size:14px;background:transparent}
