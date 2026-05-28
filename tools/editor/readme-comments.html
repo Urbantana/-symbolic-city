@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تعليقات README — symbolic-city</title>
+<style>
+  :root{--bg:#fff;--muted:#666;--accent:#0b5cff;--card:#f8f9fb}
+  body{font-family:system-ui, "Segoe UI", Roboto, Arial;max-width:980px;margin:18px auto;padding:18px;background:var(--bg);color:#111}
+  h1,h2,h3{margin:6px 0}
+  p.lead{color:var(--muted);margin-bottom:12px}
+  .panel{background:var(--card);padding:12px;border-radius:8px;border:1px solid #e6e9ef;margin-bottom:14px}
+  .row{display:flex;gap:8px;align-items:flex-start}
+  input[type=text], select, textarea{padding:8px;border:1px solid #cfd6e3;border-radius:6px;font-size:14px}
+  textarea{min-height:72px;resize:vertical;flex:2}
+  input[type=text]{width:160px}
+  label.small{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  button{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+  button.secondary{background:#6c757d}
+  .list{margin-top:12px}
+  .entry{border-top:1px dashed #e0e6f0;padding:10px 0}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:6px}
+  .tag{display:inline-block;background:#eef4ff;color:var(--accent);padding:2px 8px;border-radius:999px;font-size:12px;margin-left:6px}
+  .warn{background:#fff4e6;border:1px solid #ffd8a8;padding:8px;border-radius:6px;color:#6b4a00;margin-bottom:10px}
+  .footer-note{color:var(--muted);font-size:13px;margin-top:14px}
+  .flex-between{display:flex;justify-content:space-between;align-items:center}
+  .filter{margin-top:8px;display:flex;gap:8px;align-items:center}
+  .small-btn{background:#fff;border:1px solid #d0d7e6;color:#333;padding:6px 8px;border-radius:6px;cursor:pointer}
+  .status-open{color:#b02a37}
+  .status-review{color:#d97706}
+  .status-resolved{color:#0b8a3e}
+  @media (max-width:720px){ .row{flex-direction:column} input[type=text]{width:100%} }
+</style>
+</head>
+<body>
+  <h1>README Comments — صفحة تعليقات فريق symbolic-city</h1>
+  <p class="lead">استخدم هذه الصفحة لتوثيق ملاحظات الفريق حول تغييرات أو اقتراحات على ملف <strong>README.md</strong>. تحفظ التعليقات محليًا ويمكنك تصديرها كـ Markdown أو JSON أو كـ Changelog جاهز.</p>
+
+  <div class="panel">
+    <h3>لماذا هذه الصفحة مهمة</h3>
+    <ul>
+      <li>توثيق من قام بتغيير ماذا ولماذا قبل إجراء التعديلات النهائية.</li>
+      <li>تسهيل مساهمة الأعضاء غير التقنيين دون الحاجة لمعرفة Git.</li>
+      <li>توفير سجل زمني وملاحظات قابلة للتصدير لعمليات المراجعة والحوكمة.</li>
+    </ul>
+    <div class="warn">
+      <strong>تنبيه خصوصية:</strong> لا تدرج أي بيانات شخصية أو أسرار (PII أو مفاتيح). أي محتوى حساس يجب إزالته فورًا وإبلاغ المسؤول.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="flex-between">
+      <h3>أضف/حدّث تعليقات (10 صناديق جاهزة)</h3>
+      <div style="font-size:13px;color:var(--muted)">حفظ محلي • تصدير جاهز • <span id="countNew">0</span> تعليق/جديد</div>
+    </div>
+
+    <div class="filter">
+      <label class="small">فلتر حسب القسم:</label>
+      <select id="filterSection"><option value="">كل الأقسام</option></select>
+      <label class="small">عرض فقط التغييرات:</label>
+      <input type="checkbox" id="filterChanged">
+      <button class="small-btn" id="applyFilter">تطبيق</button>
+      <button class="small-btn" id="resetFilter">إعادة</button>
+    </div>
+
+    <div id="boxes" style="margin-top:10px"></div>
+
+    <div class="controls">
+      <button id="saveAll">Save All</button>
+      <button id="exportMd">Export as Markdown</button>
+      <button id="exportJson">Export as JSON</button>
+      <button id="exportChangelog">Export Changelog</button>
+      <button class="secondary" id="clearAll">Clear All</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>سجل التعليقات المحفوظة</h3>
+    <div id="list" class="list"></div>
+    <div class="footer-note">ملاحظة: التعليقات محفوظة محليًا في متصفحك. استخدم Export لنقلها إلى GitHub Issue أو PR. استخدم "Export Changelog" لتوليد مدخلات جاهزة لـ <code>docs/readme-changelog.md</code>.</div>
+  </div>
+
+<script>
+/* ====== إعداد الأقسام والأسماء المسبقة ====== */
+const sections = [
+  'Overview','Key Features','Quick Start','Architecture',
+  'Development Workflow','Contributing','Roadmap','Repository Structure',
+  'Partners','Contact'
+];
+const presetNames = ['علي','حسين','احمد','نرمين','وفاء','طيف','عمر الفاروق','','','']; // 10 صناديق
+const boxesEl = document.getElementById('boxes');
+const listEl = document.getElementById('list');
+const filterSection = document.getElementById('filterSection');
+const filterChanged = document.getElementById('filterChanged');
+const countNewEl = document.getElementById('countNew');
+
+/* ملء قائمة الفلتر */
+sections.forEach(s=>{
+  const opt = document.createElement('option'); opt.value=s; opt.textContent=s; filterSection.appendChild(opt);
+});
+
+/* إنشاء 10 صناديق */
+function makeBox(i){
+  const wrapper = document.createElement('div');
+  wrapper.className = 'panel';
+  wrapper.style.marginBottom = '8px';
+  wrapper.innerHTML = `
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <div style="min-width:140px">
+        <label class="small">الاسم</label>
+        <input type="text" class="name" data-i="${i}" value="${presetNames[i]||''}">
+      </div>
+      <div style="min-width:200px">
+        <label class="small">القسم المرتبط</label>
+        <select class="section" data-i="${i}">${sections.map(s=>'<option>'+s+'</option>').join('')}</select>
+      </div>
+      <div style="min-width:140px">
+        <label class="small">ربط فرعي (مثال: Quick Start > Serve)</label>
+        <input type="text" class="linked" data-i="${i}" placeholder="اختياري">
+      </div>
+      <div style="min-width:140px">
+        <label class="small">الحالة</label>
+        <select class="status" data-i="${i}">
+          <option>Open</option><option>In review</option><option>Resolved</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <label class="small">التعليق</label>
+      <textarea class="comment" data-i="${i}" placeholder="اكتب ملاحظتك هنا..."></textarea>
+    </div>
+  `;
+  return wrapper;
+}
+for(let i=0;i<10;i++) boxesEl.appendChild(makeBox(i));
+
+/* ====== وظائف التخزين والتحميل ====== */
+function loadComments(){
+  const raw = localStorage.getItem('readme_comments') || '[]';
+  try{ return JSON.parse(raw); } catch(e){ return []; }
+}
+function saveCommentsArray(arr){ localStorage.setItem('readme_comments', JSON.stringify(arr)); updateCount(arr); }
+function appendComments(arr){
+  const existing = loadComments();
+  const merged = existing.concat(arr);
+  saveCommentsArray(merged);
+  renderList(merged);
+}
+
+/* حفظ كل الصناديق غير الفارغة */
+document.getElementById('saveAll').onclick = ()=>{
+  const arr=[];
+  for(let i=0;i<10;i++){
+    const name = document.querySelector('.name[data-i="'+i+'"]').value.trim();
+    const section = document.querySelector('.section[data-i="'+i+'"]').value;
+    const linked = document.querySelector('.linked[data-i="'+i+'"]').value.trim();
+    const text = document.querySelector('.comment[data-i="'+i+'"]').value.trim();
+    const status = document.querySelector('.status[data-i="'+i+'"]').value;
+    if(name || text){
+      arr.push({id:Date.now() + '-' + Math.random().toString(36).slice(2,8), name, section, linked, text, status, ts:Date.now()});
+    }
+  }
+  if(!arr.length){ alert('لا توجد مدخلات للحفظ. اكتب اسمًا أو تعليقًا في أحد الصناديق.'); return; }
+  appendComments(arr);
+  alert('تم الحفظ محليًا.');
+  clearInputs();
+};
+
+/* تصدير كـ Markdown */
+document.getElementById('exportMd').onclick = ()=>{
+  const data = loadComments();
+  if(!data.length){ alert('لا توجد تعليقات للتصدير.'); return; }
+  const md = data.map(c=>{
+    const statusTag = c.status ? ` • ${c.status}` : '';
+    const linked = c.linked ? ` • ${c.linked}` : '';
+    return `- **${c.name}** (${c.section}${linked}, ${new Date(c.ts).toLocaleString()}${statusTag})\n\n  ${c.text}\n`;
+  }).join('\n');
+  downloadBlob(md, 'readme-comments.md', 'text/markdown');
+};
+
+/* تصدير كـ JSON */
+document.getElementById('exportJson').onclick = ()=>{
+  const data = loadComments();
+  if(!data.length){ alert('لا توجد تعليقات للتصدير.'); return; }
+  downloadBlob(JSON.stringify(data, null, 2), 'readme-comments.json', 'application/json');
+};
+
+/* تصدير Changelog (Markdown) */
+document.getElementById('exportChangelog').onclick = ()=>{
+  const data = loadComments().sort((a,b)=>a.ts-b.ts);
+  if(!data.length){ alert('لا توجد تعليقات لتوليد changelog.'); return; }
+  const header = `# README Changelog\n\nGenerated: ${new Date().toLocaleString()}\n\n`;
+  const body = data.map(c=>{
+    const status = c.status || 'Open';
+    const linked = c.linked ? ` — ${c.linked}` : '';
+    return `## ${c.section}${linked}\n- **By:** ${c.name}\n- **When:** ${new Date(c.ts).toLocaleString()}\n- **Status:** ${status}\n\n${c.text}\n`;
+  }).join('\n---\n\n');
+  downloadBlob(header + body, 'readme-changelog.md', 'text/markdown');
+};
+
+/* مسح الكل */
+document.getElementById('clearAll').onclick = ()=>{
+  if(confirm('هل تريد مسح كل التعليقات المحفوظة محليًا؟')){ localStorage.removeItem('readme_comments'); renderList([]); updateCount([]); alert('تم المسح.'); }
+};
+
+/* تنزيل Blob */
+function downloadBlob(content, filename, type){
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* مسح الحقول بعد الحفظ */
+function clearInputs(){
+  for(let i=0;i<10;i++){
+    document.querySelector('.comment[data-i="'+i+'"]').value = '';
+    document.querySelector('.linked[data-i="'+i+'"]').value = '';
+    document.querySelector('.status[data-i="'+i+'"]').value = 'Open';
+  }
+}
+
+/* عرض القائمة مع فلترة */
+function renderList(data){
+  listEl.innerHTML = '';
+  const filterS = filterSection.value;
+  const onlyChanged = filterChanged.checked;
+  const filtered = data.filter(c=>{
+    if(filterS && c.section !== filterS) return false;
+    if(onlyChanged && c.status !== 'Resolved') return false; // هنا نستخدم حالة Resolved كـ "تم التغيير"
+    return true;
+  }).sort((a,b)=>b.ts - a.ts);
+  if(!filtered.length){ listEl.innerHTML = '<div style="color:var(--muted)">لا توجد تعليقات للعرض.</div>'; updateCount(data); return; }
+  filtered.forEach(c=>{
+    const d = document.createElement('div'); d.className='entry';
+    const meta = document.createElement('div'); meta.className='meta';
+    const statusClass = c.status === 'Resolved' ? 'status-resolved' : (c.status === 'In review' ? 'status-review' : 'status-open');
+    meta.innerHTML = `<strong>${escapeHtml(c.name||'—')}</strong> • ${escapeHtml(c.section)} ${c.linked? '• '+escapeHtml(c.linked):''} • ${new Date(c.ts).toLocaleString()} <span class="${statusClass}">[${escapeHtml(c.status)}]</span>`;
+    const body = document.createElement('div'); body.textContent = c.text;
+    const actions = document.createElement('div'); actions.style.marginTop='6px';
+    const resolve = document.createElement('button'); resolve.textContent='وضع كـ Resolved'; resolve.className='small-btn';
+    resolve.onclick = ()=>{ markResolved(c.id); };
+    const del = document.createElement('button'); del.textContent='حذف'; del.className='small-btn';
+    del.onclick = ()=>{ if(confirm('حذف هذه التعليقة؟')){ deleteComment(c.id); } };
+    const copy = document.createElement('button'); copy.textContent='نسخ Markdown'; copy.className='small-btn';
+    copy.onclick = ()=>{ navigator.clipboard.writeText(formatSingleMd(c)).then(()=>alert('تم نسخ Markdown')); };
+    actions.appendChild(copy); actions.appendChild(resolve); actions.appendChild(del);
+    d.appendChild(meta); d.appendChild(body); d.appendChild(actions);
+    listEl.appendChild(d);
+  });
+  updateCount(data);
+}
+
+/* حذف تعليق */
+function deleteComment(id){
+  const arr = loadComments().filter(x=>x.id !== id);
+  saveCommentsArray(arr);
+  renderList(arr);
+}
+
+/* وضع تعليق كـ Resolved */
+function markResolved(id){
+  const arr = loadComments().map(x=> x.id===id ? {...x, status:'Resolved', ts:Date.now()} : x );
+  saveCommentsArray(arr);
+  renderList(arr);
+}
+
+/* تنسيق تعليق واحد كـ Markdown */
+function formatSingleMd(c){
+  const statusTag = c.status ? ` • ${c.status}` : '';
+  const linked = c.linked ? ` • ${c.linked}` : '';
+  return `- **${c.name}** (${c.section}${linked}, ${new Date(c.ts).toLocaleString()}${statusTag})\n\n  ${c.text}\n`;
+}
+
+/* هروب HTML */
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+/* فلترة */
+document.getElementById('applyFilter').onclick = ()=>{ renderList(loadComments()); };
+document.getElementById('resetFilter').onclick = ()=>{ filterSection.value=''; filterChanged.checked=false; renderList(loadComments()); };
+
+/* عداد التعليقات الجديدة */
+function updateCount(arr){
+  const total = (arr||[]).length;
+  countNewEl.textContent = total;
+}
+
+/* تحميل أولي */
+renderList(loadComments());
+</script>
+</body>
+</html>
